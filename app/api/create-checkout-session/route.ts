@@ -5,7 +5,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-05-28.basil',
 })
 // lookup_key = anagram-basic-monthly
-const YOUR_DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'http://localhost:3000'
+const YOUR_DOMAIN = process.env.NEXT_PUBLIC_DOMAIN 
+  ? `https://${process.env.NEXT_PUBLIC_DOMAIN}` 
+  : 'http://localhost:3000'
 
 export async function POST(request: NextRequest) {
   try {
