@@ -2,7 +2,17 @@
 
 import { useState } from 'react';
 
-export default function Home() {
+interface PricingCardProps {
+  title: string;
+  price: number;
+  lookupKey: string;
+  features: string[];
+  popular?: boolean;
+  gradient: string;
+  badge?: string;
+}
+
+function PricingCard({ title, price, lookupKey, features, popular, gradient, badge }: PricingCardProps) {
   const [loading, setLoading] = useState(false);
 
   const handleSubscribe = async () => {
@@ -14,7 +24,7 @@ export default function Home() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          lookup_key: 'anagram-basic-monthly',
+          lookup_key: lookupKey,
         }),
       });
 
@@ -33,56 +43,127 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Premium SaaS</h1>
-            <p className="text-white/70">Unlock powerful features for your business</p>
-          </div>
-          
-          <div className="text-center mb-8">
-            <div className="text-5xl font-bold text-white mb-2">$200</div>
-            <div className="text-white/70">per month</div>
-          </div>
+    <div className={`relative bg-white/10 backdrop-blur-lg rounded-2xl border ${popular ? 'border-yellow-400/50 shadow-2xl scale-105' : 'border-white/20'} shadow-xl p-8 ${popular ? 'ring-2 ring-yellow-400/30' : ''}`}>
+      {popular && (
+        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+          <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-sm font-bold px-4 py-2 rounded-full">
+            MOST POPULAR
+          </span>
+        </div>
+      )}
+      
+      {badge && (
+        <div className="absolute -top-3 -right-3">
+          <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+            {badge}
+          </span>
+        </div>
+      )}
 
-          <div className="space-y-4 mb-8">
-            <div className="flex items-center text-white/90">
-              <svg className="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Advanced Analytics Dashboard
-            </div>
-            <div className="flex items-center text-white/90">
-              <svg className="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Priority Customer Support
-            </div>
-            <div className="flex items-center text-white/90">
-              <svg className="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Unlimited API Requests
-            </div>
-            <div className="flex items-center text-white/90">
-              <svg className="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Custom Integrations
-            </div>
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold text-white mb-2">{title}</h2>
+        <div className="text-4xl font-bold text-white mb-2">
+          ${price.toLocaleString()}
+        </div>
+        <div className="text-white/70">per month</div>
+      </div>
+
+      <div className="space-y-3 mb-8">
+        {features.map((feature, index) => (
+          <div key={index} className="flex items-center text-white/90">
+            <svg className="w-4 h-4 text-green-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span className="text-sm">{feature}</span>
           </div>
+        ))}
+      </div>
 
-          <button
-            onClick={handleSubscribe}
-            disabled={loading}
-            className="w-full bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105"
-          >
-            {loading ? 'Processing...' : 'Subscribe Now'}
-          </button>
+      <button
+        onClick={handleSubscribe}
+        disabled={loading}
+        className={`w-full ${gradient} disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105`}
+      >
+        {loading ? 'Processing...' : 'Subscribe Now'}
+      </button>
 
-          <p className="text-xs text-white/50 text-center mt-4">
-            Cancel anytime. No setup fees.
+      <p className="text-xs text-white/50 text-center mt-4">
+        Cancel anytime. No setup fees.
+      </p>
+    </div>
+  );
+}
+
+export default function Home() {
+  const plans: PricingCardProps[] = [
+    {
+      title: "Novice",
+      price: 1,
+      lookupKey: "anagram-novice-monthly",
+      features: [
+        "Basic Dashboard",
+        "5 Projects",
+        "Email Support",
+        "1GB Storage",
+        "Basic Analytics"
+      ],
+      gradient: "bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
+    },
+    {
+      title: "Basic",
+      price: 200,
+      lookupKey: "anagram-basic-monthly",
+      features: [
+        "Advanced Analytics Dashboard",
+        "Priority Customer Support",
+        "Unlimited API Requests",
+        "Custom Integrations",
+        "50GB Storage",
+        "Team Collaboration"
+      ],
+      popular: true,
+      gradient: "bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600"
+    },
+    {
+      title: "Wizard",
+      price: 4000,
+      lookupKey: "anagram-wizard-monthly",
+      features: [
+        "Everything in Basic",
+        "Dedicated Account Manager",
+        "Custom Development",
+        "White-label Solutions",
+        "Unlimited Storage",
+        "24/7 Phone Support",
+        "Advanced Security",
+        "Custom SLA"
+      ],
+      badge: "ENTERPRISE",
+      gradient: "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-12 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+            Choose Your Plan
+          </h1>
+          <p className="text-xl text-white/70 max-w-2xl mx-auto">
+            Select the perfect subscription tier for your needs. Upgrade or downgrade anytime.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {plans.map((plan) => (
+            <PricingCard key={plan.lookupKey} {...plan} />
+          ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <p className="text-white/60 text-sm">
+            All plans include a 14-day free trial. No credit card required to start.
           </p>
         </div>
       </div>
