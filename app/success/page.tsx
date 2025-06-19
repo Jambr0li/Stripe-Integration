@@ -1,10 +1,6 @@
-'use client';
+import Link from 'next/link';
 
-import { useSearchParams } from 'next/navigation';
 export default function Success() {
-  const searchParams = useSearchParams();
-  const sessionId = searchParams.get('session_id');
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-900 via-emerald-900 to-teal-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
@@ -16,7 +12,7 @@ export default function Success() {
               </svg>
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">Payment Successful!</h1>
-            <p className="text-white/70">Thank you for subscribing to Premium SaaS</p>
+            <p className="text-white/70">Thank you for subscribing</p>
           </div>
 
           <div className="space-y-4 mb-8">
@@ -25,29 +21,22 @@ export default function Success() {
                 Your subscription is now active and you have access to all premium features.
               </p>
             </div>
-            
-            {sessionId && (
-              <div className="bg-white/5 rounded-lg p-4">
-                <p className="text-white/70 text-xs">Session ID:</p>
-                <p className="text-white/90 text-sm font-mono break-all">{sessionId}</p>
-              </div>
-            )}
           </div>
 
           <div className="space-y-3">
-            <button
-              onClick={() => window.location.href = '/'}
-              className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105"
+            <Link
+              href="/"
+              className="block w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 text-center"
             >
               Go to Dashboard
-            </button>
+            </Link>
             
-            <button
-              onClick={() => window.location.href = '/api/create-portal-session'}
-              className="w-full bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 border border-white/20"
+            <a
+              href="/api/create-portal-session"
+              className="block w-full bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 border border-white/20 text-center"
             >
               Manage Subscription
-            </button>
+            </a>
           </div>
 
           <p className="text-xs text-white/50 mt-4">
