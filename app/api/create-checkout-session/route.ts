@@ -29,8 +29,8 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: 'subscription',
-      success_url: `${YOUR_DOMAIN}/?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+      success_url: `${YOUR_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${YOUR_DOMAIN}/canceled?session_id={CHECKOUT_SESSION_ID}`,
     })
 
     return NextResponse.json({ url: session.url })
