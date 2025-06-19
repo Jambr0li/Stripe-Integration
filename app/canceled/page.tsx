@@ -1,11 +1,4 @@
-'use client';
-
-import { useSearchParams } from 'next/navigation';
-
 export default function Canceled() {
-  const searchParams = useSearchParams();
-  const sessionId = searchParams.get('session_id');
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-900 via-orange-900 to-yellow-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
@@ -23,7 +16,7 @@ export default function Canceled() {
           <div className="space-y-4 mb-8">
             <div className="bg-white/5 rounded-lg p-4">
               <p className="text-white/90 text-sm">
-                No worries! Your payment was not processed and you haven&apos;t been charged.
+                No worries! Your payment was not processed and you have not been charged.
               </p>
             </div>
             
@@ -32,29 +25,22 @@ export default function Canceled() {
                 You can try again anytime or contact support if you need assistance.
               </p>
             </div>
-
-            {sessionId && (
-              <div className="bg-white/5 rounded-lg p-4">
-                <p className="text-white/70 text-xs">Session ID:</p>
-                <p className="text-white/90 text-sm font-mono break-all">{sessionId}</p>
-              </div>
-            )}
           </div>
 
           <div className="space-y-3">
-            <button
-              onClick={() => window.location.href = '/'}
-              className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105"
+            <a
+              href="/"
+              className="block w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 text-center"
             >
               Try Again
-            </button>
+            </a>
             
-            <button
-              onClick={() => window.location.href = '/'}
-              className="w-full bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 border border-white/20"
+            <a
+              href="/"
+              className="block w-full bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 border border-white/20 text-center"
             >
               Back to Home
-            </button>
+            </a>
           </div>
 
           <div className="mt-6 pt-6 border-t border-white/10">
