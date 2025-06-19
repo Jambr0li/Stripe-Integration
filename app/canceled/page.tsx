@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Canceled() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-900 via-orange-900 to-yellow-900 flex items-center justify-center p-4">
@@ -28,19 +30,19 @@ export default function Canceled() {
           </div>
 
           <div className="space-y-3">
-            <a
+            <Link
               href="/"
               className="block w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 text-center"
             >
               Try Again
-            </a>
+            </Link>
             
-            <a
+            <Link
               href="/"
               className="block w-full bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 border border-white/20 text-center"
             >
               Back to Home
-            </a>
+            </Link>
           </div>
 
           <div className="mt-6 pt-6 border-t border-white/10">
