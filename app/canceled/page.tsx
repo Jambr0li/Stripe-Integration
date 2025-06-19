@@ -23,7 +23,7 @@ export default function Canceled() {
           <div className="space-y-4 mb-8">
             <div className="bg-white/5 rounded-lg p-4">
               <p className="text-white/90 text-sm">
-                No worries! Your payment was not processed and you haven't been charged.
+                No worries! Your payment was not processed and you haven&apos;t been charged.
               </p>
             </div>
             
