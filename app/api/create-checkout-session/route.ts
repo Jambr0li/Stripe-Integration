@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     })
 
-    return NextResponse.redirect(session.url!, 303)
+    return NextResponse.json({ url: session.url })
   } catch (error) {
     console.error('Error creating checkout session:', error)
     return NextResponse.json(
