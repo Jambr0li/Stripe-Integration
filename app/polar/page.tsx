@@ -103,7 +103,7 @@ export default function Home() {
         "1GB Storage",
         "Basic Analytics"
       ],
-      lookupKey: "Novice",
+      lookupKey: "0efffe64-7f4d-4886-996d-e0f1e56059bc",
       gradient: "bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
     },
   ];
