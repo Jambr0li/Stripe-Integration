@@ -109,9 +109,35 @@ export default function Home() {
         "1GB Storage",
         "Basic Analytics"
       ],
-      lookupKey: "0efffe64-7f4d-4886-996d-e0f1e56059bc",
+      lookupKey: "3df07a1f-30f0-4cba-8160-7cd7e3fb0ccc",
       gradient: "bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
     },
+    {
+        title: "Basic",
+        price: 300,
+        features: [
+          "Basic Dashboard",
+          "5 Projects",
+          "Email Support",
+          "1GB Storage",
+          "Basic Analytics"
+        ],
+        lookupKey: "f7d27fbe-1557-49b9-953d-c8647b6d5cd8",
+        gradient: "bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
+      },
+      {
+        title: "Certified Badass",
+        price: 25000,
+        features: [
+          "Basic Dashboard",
+          "5 Projects",
+          "Email Support",
+          "1GB Storage",
+          "Basic Analytics"
+        ],
+        lookupKey: "8a17c64c-999e-4811-953d-0f183b36ccfe",
+        gradient: "bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
+      },
   ];
 
   return (
