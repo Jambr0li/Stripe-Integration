@@ -27,9 +27,9 @@ function PricingCard({ title, price, features, popular, gradient, badge }: Prici
       } else {
         throw new Error('Failed to create checkout session');
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error:', error);
-      alert(`Something went wrong: ${error.message}`);
+      alert(`Something went wrong: ${error}`);
     } finally {
       setLoading(false);
     }
