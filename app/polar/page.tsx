@@ -19,13 +19,7 @@ function PricingCard({ title, price, lookupKey, features, popular, gradient, bad
     setLoading(true);
     try {
       const response = await fetch('/api/polar/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          lookup_key: lookupKey,
-        }),
+        method: 'GET',
       });
 
       if (response.ok) {
