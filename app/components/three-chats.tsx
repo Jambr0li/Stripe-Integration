@@ -224,7 +224,6 @@ interface ChatWindowRef {
 
 function ThreeChats() {
   const [prompt, setPrompt] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
   
   const chat1Ref = useRef<ChatWindowRef>(null)
   const chat2Ref = useRef<ChatWindowRef>(null)
@@ -242,7 +241,7 @@ function ThreeChats() {
     chat3Ref.current?.sendMessage(userMessage)
   }
 
-  const anyLoading = chat1Ref.current?.isLoading || chat2Ref.current?.isLoading || chat3Ref.current?.isLoading || isLoading
+  const anyLoading = chat1Ref.current?.isLoading || chat2Ref.current?.isLoading || chat3Ref.current?.isLoading
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
