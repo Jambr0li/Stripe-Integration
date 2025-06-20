@@ -3,6 +3,7 @@ import { Polar } from "@polar-sh/sdk";
 import { NextRequest, NextResponse } from 'next/server';
 
 const polar = new Polar({
+  server: "sandbox",
   accessToken: process.env["POLAR_ACCESS_TOKEN"] ?? "",
 });
 
