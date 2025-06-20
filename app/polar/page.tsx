@@ -25,7 +25,10 @@ function PricingCard({ title, price, features, popular, gradient, badge }: Prici
         const { url } = await response.json();
         window.location.href = url;
       } else {
-        throw new Error('Failed to create checkout session');
+        const errorText = await response.text();
+        console.error('Response status:', response.status);
+        console.error('Response text:', errorText);
+        throw new Error(`Failed to create checkout session: ${response.status} - ${errorText}`);
       }
     } catch (error) {
       console.error('Error:', error);
