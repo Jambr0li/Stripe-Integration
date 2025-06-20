@@ -5,19 +5,20 @@ import { useState } from 'react';
 interface PricingCardProps {
   title: string;
   price: number;
+  lookupKey: string;
   features: string[];
   popular?: boolean;
   gradient: string;
   badge?: string;
 }
 
-function PricingCard({ title, price, features, popular, gradient, badge }: PricingCardProps) {
+function PricingCard({ title, price, lookupKey, features, popular, gradient, badge }: PricingCardProps) {
   const [loading, setLoading] = useState(false);
 
   const handleSubscribe = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/polar/checkout', {
+      const response = await fetch(`/api/polar/checkout?products=${lookupKey}`, {
         method: 'GET',
       });
 
@@ -102,6 +103,7 @@ export default function Home() {
         "1GB Storage",
         "Basic Analytics"
       ],
+      lookupKey: "Novice",
       gradient: "bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
     },
   ];
