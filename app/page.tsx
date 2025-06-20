@@ -11,7 +11,7 @@ export default function PricingPage() {
             Choose Your Payment Provider
           </h1>
           <p className="text-xl text-white/70 max-w-2xl mx-auto">
-            Select which payment system you'd like to test.
+            Select which payment system you&apos;d like to test.
           </p>
         </div>
 
