@@ -1,169 +1,63 @@
 'use client';
 
-import { useState } from 'react';
+import Link from 'next/link';
 
-interface PricingCardProps {
-  title: string;
-  price: number;
-  lookupKey: string;
-  features: string[];
-  popular?: boolean;
-  gradient: string;
-  badge?: string;
-}
-
-function PricingCard({ title, price, lookupKey, features, popular, gradient, badge }: PricingCardProps) {
-  const [loading, setLoading] = useState(false);
-
-  const handleSubscribe = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          lookup_key: lookupKey,
-        }),
-      });
-
-      if (response.ok) {
-        const { url } = await response.json();
-        window.location.href = url;
-      } else {
-        throw new Error('Failed to create checkout session');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Something went wrong. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className={`relative bg-white/10 backdrop-blur-lg rounded-2xl border ${popular ? 'border-yellow-400/50 shadow-2xl scale-105' : 'border-white/20'} shadow-xl p-8 ${popular ? 'ring-2 ring-yellow-400/30' : ''}`}>
-      {popular && (
-        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-          <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-sm font-bold px-4 py-2 rounded-full">
-            MOST POPULAR
-          </span>
-        </div>
-      )}
-      
-      {badge && (
-        <div className="absolute -top-3 -right-3">
-          <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-            {badge}
-          </span>
-        </div>
-      )}
-
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-white mb-2">{title}</h2>
-        <div className="text-4xl font-bold text-white mb-2">
-          ${price.toLocaleString()}
-        </div>
-        <div className="text-white/70">per month</div>
-      </div>
-
-      <div className="space-y-3 mb-8">
-        {features.map((feature, index) => (
-          <div key={index} className="flex items-center text-white/90">
-            <svg className="w-4 h-4 text-green-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-            <span className="text-sm">{feature}</span>
-          </div>
-        ))}
-      </div>
-
-      <button
-        onClick={handleSubscribe}
-        disabled={loading}
-        className={`w-full ${gradient} disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105`}
-      >
-        {loading ? 'Processing...' : 'Subscribe Now'}
-      </button>
-
-      <p className="text-xs text-white/50 text-center mt-4">
-        Cancel anytime. No setup fees.
-      </p>
-    </div>
-  );
-}
-
-export default function Home() {
-  const plans: PricingCardProps[] = [
-    {
-      title: "Novice",
-      price: 1,
-      lookupKey: "anagram-novice-monthly",
-      features: [
-        "Basic Dashboard",
-        "5 Projects",
-        "Email Support",
-        "1GB Storage",
-        "Basic Analytics"
-      ],
-      gradient: "bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
-    },
-    {
-      title: "Basic",
-      price: 200,
-      lookupKey: "anagram-basic-monthly",
-      features: [
-        "Advanced Analytics Dashboard",
-        "Priority Customer Support",
-        "Unlimited API Requests",
-        "Custom Integrations",
-        "50GB Storage",
-        "Team Collaboration"
-      ],
-      popular: true,
-      gradient: "bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600"
-    },
-    {
-      title: "Wizard",
-      price: 4000,
-      lookupKey: "anagram-wizard-monthly",
-      features: [
-        "Everything in Basic",
-        "Dedicated Account Manager",
-        "Custom Development",
-        "White-label Solutions",
-        "Unlimited Storage",
-        "24/7 Phone Support",
-        "Advanced Security",
-        "Custom SLA"
-      ],
-      badge: "ENTERPRISE",
-      gradient: "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
-    }
-  ];
-
+export default function PricingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-12 px-4">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
-            Choose Your Plan
+            Choose Your Payment Provider
           </h1>
           <p className="text-xl text-white/70 max-w-2xl mx-auto">
-            Select the perfect subscription tier for your needs. Upgrade or downgrade anytime.
+            Select which payment system you'd like to test.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {plans.map((plan) => (
-            <PricingCard key={plan.lookupKey} {...plan} />
-          ))}
+        <div className="grid md:grid-cols-2 gap-8">
+          <Link href="/stripe" className="group">
+            <div className="relative bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-xl p-12 transition-all duration-300 hover:scale-105 hover:border-blue-400/50">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mx-auto mb-6 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.532 0-4.128-2.524-5.851-6.591-7.505h0z"/>
+                  </svg>
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-4">Stripe</h2>
+                <p className="text-white/70 mb-6">
+                  Test our Stripe integration with multiple pricing tiers and subscription management.
+                </p>
+                <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold py-3 px-6 rounded-lg group-hover:from-blue-600 group-hover:to-cyan-600 transition-all duration-200">
+                  View Stripe Plans
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/polar" className="group">
+            <div className="relative bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-xl p-12 transition-all duration-300 hover:scale-105 hover:border-purple-400/50">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mx-auto mb-6 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                  </svg>
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-4">Polar</h2>
+                <p className="text-white/70 mb-6">
+                  Test our Polar integration for developer-focused subscription management.
+                </p>
+                <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-lg group-hover:from-purple-600 group-hover:to-pink-600 transition-all duration-200">
+                  View Polar Plans
+                </div>
+              </div>
+            </div>
+          </Link>
         </div>
 
         <div className="text-center mt-12">
           <p className="text-white/60 text-sm">
-            All plans include a 14-day free trial. No credit card required to start.
+            Both integrations are in sandbox/test mode for safe testing.
           </p>
         </div>
       </div>
