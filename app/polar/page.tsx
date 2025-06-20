@@ -5,14 +5,13 @@ import { useState } from 'react';
 interface PricingCardProps {
   title: string;
   price: number;
-  lookupKey: string;
   features: string[];
   popular?: boolean;
   gradient: string;
   badge?: string;
 }
 
-function PricingCard({ title, price, lookupKey, features, popular, gradient, badge }: PricingCardProps) {
+function PricingCard({ title, price, features, popular, gradient, badge }: PricingCardProps) {
   const [loading, setLoading] = useState(false);
 
   const handleSubscribe = async () => {
@@ -93,7 +92,6 @@ export default function Home() {
     {
       title: "Novice",
       price: 1,
-      lookupKey: "anagram-novice-monthly",
       features: [
         "Basic Dashboard",
         "5 Projects",
@@ -119,7 +117,7 @@ export default function Home() {
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {plans.map((plan) => (
-            <PricingCard key={plan.lookupKey} {...plan} />
+            <PricingCard key={plan.title} {...plan} />
           ))}
         </div>
 
