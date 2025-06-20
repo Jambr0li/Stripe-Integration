@@ -1,9 +1,9 @@
-import { Chat } from '../components/chat'
+import { ThreeChats } from '../components/three-chats'
 
 export default function Home() {
   return (
     <div>
-      <Chat/>
+      <ThreeChats/>
     </div>
   );
 }
