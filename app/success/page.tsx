@@ -1,6 +1,29 @@
 import Link from 'next/link';
+import { getFakeCurrentUser } from '../../lib/fake-auth';
+import { kv, syncStripeDataToKV } from '../../lib/stripe-sync';
 
-export default function Success() {
+// Sync subscription data on success page load
+async function syncSubscriptionData() {
+  try {
+    const user = getFakeCurrentUser();
+    const stripeCustomerId = await kv.get(`stripe:user:${user.id}`);
+    
+    if (!stripeCustomerId) {
+      console.log('[SUCCESS] No Stripe customer ID found for user');
+      return;
+    }
+
+    console.log(`[SUCCESS] Syncing subscription data for customer: ${stripeCustomerId}`);
+    await syncStripeDataToKV(stripeCustomerId);
+    console.log('[SUCCESS] Subscription data synced successfully');
+  } catch (error) {
+    console.error('[SUCCESS] Error syncing subscription data:', error);
+  }
+}
+
+export default async function Success() {
+  // Sync subscription data immediately on page load
+  await syncSubscriptionData();
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-900 via-emerald-900 to-teal-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full">

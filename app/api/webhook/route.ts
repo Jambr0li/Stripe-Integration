@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { processStripeEvent } from '../../../lib/stripe-sync'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-05-28.basil',
@@ -7,63 +8,44 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
+// Utility function to handle async operations safely
+async function tryCatch<T>(fn: () => Promise<T>): Promise<{ result?: T; error?: Error }> {
+  try {
+    const result = await fn()
+    return { result }
+  } catch (error) {
+    return { error: error as Error }
+  }
+}
+
 export async function POST(request: NextRequest) {
   const body = await request.text()
   const signature = request.headers.get('stripe-signature') as string
 
-  let event: Stripe.Event
+  if (!signature) return NextResponse.json({}, { status: 400 })
 
-  try {
-    event = stripe.webhooks.constructEvent(body, signature, endpointSecret)
-  } catch (err) {
-    console.log(`⚠️  Webhook signature verification failed.`, (err as Error).message)
-    return NextResponse.json({ error: 'Webhook signature verification failed' }, { status: 400 })
+  async function doEventProcessing() {
+    if (typeof signature !== "string") {
+      throw new Error("[STRIPE HOOK] Header isn't a string???")
+    }
+
+    const event = stripe.webhooks.constructEvent(
+      body,
+      signature,
+      endpointSecret
+    )
+
+    console.log(`[STRIPE WEBHOOK] Received event: ${event.type}`)
+    
+    // Process the event using our simplified sync approach
+    await processStripeEvent(event)
   }
 
-  let subscription: Stripe.Subscription
-  let status: string
+  const { error } = await tryCatch(doEventProcessing)
 
-  // Handle the event
-  switch (event.type) {
-    case 'customer.subscription.trial_will_end':
-      subscription = event.data.object as Stripe.Subscription
-      status = subscription.status
-      console.log(`Subscription status is ${status}.`)
-      // Then define and call a method to handle the subscription trial ending.
-      // handleSubscriptionTrialEnding(subscription);
-      break
-    case 'customer.subscription.deleted':
-      subscription = event.data.object as Stripe.Subscription
-      status = subscription.status
-      console.log(`Subscription status is ${status}.`)
-      // Then define and call a method to handle the subscription deleted.
-      // handleSubscriptionDeleted(subscriptionDeleted);
-      break
-    case 'customer.subscription.created':
-      subscription = event.data.object as Stripe.Subscription
-      status = subscription.status
-      console.log(`Subscription status is ${status}.`)
-      // Then define and call a method to handle the subscription created.
-      // handleSubscriptionCreated(subscription);
-      break
-    case 'customer.subscription.updated':
-      subscription = event.data.object as Stripe.Subscription
-      status = subscription.status
-      console.log(`Subscription status is ${status}.`)
-      // Then define and call a method to handle the subscription update.
-      // handleSubscriptionUpdated(subscription);
-      break
-    case 'entitlements.active_entitlement_summary.updated':
-      const entitlementSummary = event.data.object
-      console.log(`Active entitlement summary updated for ${entitlementSummary}.`)
-      // Then define and call a method to handle active entitlement summary updated
-      // handleEntitlementUpdated(entitlementSummary);
-      break
-    default:
-      // Unexpected event type
-      console.log(`Unhandled event type ${event.type}.`)
+  if (error) {
+    console.error("[STRIPE HOOK] Error processing event", error)
   }
 
-  // Return a 200 response to acknowledge receipt of the event
   return NextResponse.json({ received: true })
 } 
