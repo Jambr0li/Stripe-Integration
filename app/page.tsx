@@ -5,6 +5,11 @@ import Link from 'next/link';
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-12 px-4">
+      <div 
+        dangerouslySetInnerHTML={{
+          __html: '<script src="https://studio.anagram.ai/load-experience.js?experienceID=9731a431-12a7-4ba2-81d7-416f1546c847"></script>'
+        }}
+      />
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
