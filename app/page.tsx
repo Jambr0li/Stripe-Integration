@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-12 px-4">
-      <div className="bg-white/30 backdrop-blur-lg rounded-2xl border border-white/40 shadow-xl p-12 mb-8">
+      <div className="bg-white/80 backdrop-blur-lg rounded-2xl border border-white/40 shadow-xl p-12 mb-8">
       <div 
         dangerouslySetInnerHTML={{
           __html: '<script src="https://studio.anagram.ai/load-experience.js?experienceID=9731a431-12a7-4ba2-81d7-416f1546c847"></script>'
